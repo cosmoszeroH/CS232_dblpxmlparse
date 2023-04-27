@@ -45,22 +45,16 @@ def context_iter(dblp_path):
     return etree.iterparse(source=dblp_path, dtd_validation=True, load_dtd=True)
 
 
-def clear_element(element):
-    element.clear()
-    while element.getprevious() is not None:
-        del element.getparent()[0]
-
-
 def parse_entity(elem, features):
-    attribs = {}
+    attrib_values = {}
     for feature in features:
-        attribs[feature] = []
+        attrib_values[feature] = []
 
     for sub in elem.getchildren():
         if sub.tag in features:
-            attribs[sub.tag].append(sub.text)
+            attrib_values[sub.tag].append(sub.text)
 
-    return attribs
+    return attrib_values
 
 
 def parse_article(elem):
@@ -143,8 +137,6 @@ def parse_all(dblp_path):
 
         if elem.tag == 'www':
             parse_www(elem)
-
-        clear_element(elem)
 
 
 dblp_path = 'dblp.xml'
